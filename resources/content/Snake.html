@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Snake</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+    <h3>Snake. The game.</h3>
+    <p> "Snake" must be one of the most famous games ever (it was also the only game available on the mobile phones in the begining of the 2000).</p>
+    <p> The rules are easy : you use your keybord to move the snake around so that it can eat "the food". If it does that, its' tail grows bigger. If it hits the walls, you start over again.</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+class Snake {
+  float x = 0;
+  float y = 0;
+  float xspeed = 1;
+  float yspeed = 0;
+  int total = 0;
+  ArrayList<PVector> tail = new ArrayList<PVector>();                                        //Pvector is a two dimentional vetor. In our example, we will use the vector in order to represent the tail of the sanke.
+
+
+
+  boolean eat(PVector pos) {
+    float d = dist(x, y, pos.x, pos.y);
+    if (d < 1) {
+      total++;
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void dir(float x, float y) {                                                            //updates direction to the snake
+    xspeed = x;
+    yspeed = y;
+  }
+
+  void death() {                                                                        //clears the tail when the snake hits the wall
+    for (int i = 0; i < tail.size(); i++) {                                            //the for loop goes to each cell and clear it;
+      PVector pos = tail.get(i);
+      float d = dist(x, y, pos.x, pos.y);
+      if (d < 1) {
+       // println("starting over");
+        total = 0;
+        tail.clear();
+      }
+    }
+  }
+
+  void update() {                                                                     // function that makes the snake move; if we did not have this function, the snake will not move;
+
+    if (total > 0) {                                                                  //makes the snake move to the chosen direction; if this if missed, all the cells would look like are part of the snake
+      if (total == tail.size() && !tail.isEmpty()) {
+        tail.remove(0);
+      }
+      tail.add(new PVector(x, y));
+    }
+
+    x = x + xspeed*square_size;
+    y = y + yspeed*square_size;
+
+    x = constrain(x, 0, width-square_size);                                                  //Constrains the x and y to be between 0 and width-square_size
+    y = constrain(y, 0, height-square_size);
+  }
+
+  void show() {
+    fill(255);
+    for (PVector v : tail) {                                                                  //shows the tail of the snake
+      rect(v.x, v.y, square_size, square_size);
+    }
+    rect(x, y, square_size, square_size);                                                   //shows the head of the snake
+  }
+}
+
+void pickLocation() {                                                                //this function is used to generate a random position to the "food" cell
+  int cols = width/square_size;
+  int rows = height/square_size;
+  food = new PVector(floor(random(cols)), floor(random(rows)));                       // a new cell of where the "food" will be is picked randomly
+  food.mult(square_size);
+}
+
+
+
+Snake s;                                                                           //creates the snake snake
+int square_size = 50;                                                               //the size of the box
+
+PVector food;                                                                      //creates the vector of the food
+
+void setup() {
+  size(600, 600);
+  s = new Snake();
+  frameRate(10);
+  pickLocation();
+}
+
+
+
+void draw() {
+  background(51);
+
+  if (s.eat(food)) {
+    pickLocation();
+  }
+  s.death();            //check if the snake should die
+  s.update();           //contantly updates the movement of the snake
+  s.show();             //displays the movement of the snake
+
+
+  fill(255, 0, 100);
+  rect(food.x, food.y, square_size, square_size);
+}
+
+
+void keyPressed() {
+  if (keyCode == UP) {
+    s.dir(0, -1);
+  } else if (keyCode == DOWN) {
+    s.dir(0, 1);
+  } else if (keyCode == RIGHT) {
+    s.dir(1, 0);
+  } else if (keyCode == LEFT) {
+    s.dir(-1, 0);
+  }
+}
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>The code</h3>
+  <p> As we stated in the "Get Started" page, we will need a Snake object. Our snake has some attributes : the (x,y) position on the grid, the speed, the tail and its length. We know that if the snake eats one square, its' tail grows bigger. As a result, whenever the snake hits its target, we will make the tail bigger.</p>
+  <p> the function <b>  boolean eat(PVector pos) </b> checks if we hve hit our square target. If we did, we will make sure that the tail will grow. </p>
+  <p> The <b> void dir(float x, float y) </b> is used to change the direction of the snake. Using our arrow keys, we want to change the direction of the snake changes.</p>
+  <p> <b> void death()</b> functions is used to clear our the tail of the snake. As a result, when the snake hits the walls, this function will make sure that when we start again the game, the tail is clear. Moreover, it will print in the console log that the game started again. </p>
+  <p> The function <b>   void update() </b> is the one that makes sure that the snake moves.If this function did not exist, nothing would move. Moreover, it continously updates the position of the snake and of its tail. Moreover, we need to make sure that each element of the snake's tail has the correct size , no bigger than the size of the grid( x = constrain(x, 0, width-square_size); )</p>
+  <p> The <b>"void show()"</b> displays the snake and its tail. The head and each element of the tail are made out of small squares. As a result, we use the rect() function that continously draws the snake.</p>
+  <p> An interesting feature of the Snake game is that the "food" of the snake appears in random spots of the map. As a result, we need a functon that generates random spots of where the food will appear. Fo that, we have created the "void pickLocation()". </p>
+  <p> <b>void setup()</b> is used to make the window of the game. Moreover, we put the snake in the grid (s = new Snake();). We also call the function <b>pickLocation();</b> so that the food is generated in ar andom spot. </p>
+  <p> In the <b> void draw() </b> we make sure that if we hit the target of where the food is, snake's tail will grow. We also need to check if the snake should die ( because we hit the walls) We also make sure to continously display the movement of the snake if it is still alive .
+  <p> The last function <b> void keyPressed() </b> makes sure that when we press the arrow keys, the direction of the snake.</p>
+  <h3> Want some challanges? </h3>
+  <p> Try our by generating 2 food spots instead of one.You can do that by adding an extra "pickLocation();" in your code. </p>
+  <p> Try to make the size of the window smaller. You can do that by changing the numbers from the line 78.</p>
+      <script src="https://gist.github.com/Merdenea/6b8989397ee86a5fcbb0f8e0a8458b36.js"></script>
+</div>
+<h2><a href="2048.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+
+</html>

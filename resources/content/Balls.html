@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Balls</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+
+
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+ <h3>Welcome to BALLS application.</h3>
+  <p>
+    This game may appear to be kind of difficult to implement, but is just 10 lines of code, really.<br>
+    It is fun and you can learn how to do cool stuff very easy.
+    As used before, we have our <code>setup()</code> method in which we declare the size of the window and the background.
+  Then, we have our <code>draw()</code> method in which we call the <code>variableEcllipse()</code> function and we send the current
+mouse position and the previous mouse position- each ball is drawed accordingly to the speed of the mouse
+between 2 different positions. That’s why we need this information.<br>
+  In the <code>variableEcllipse()</code> function we calculate the speed between the current mouse position and the previous
+mouse position. Then, the speed influences the color of the border of the ball as well as the size of the ellipse.<br>
+  A slower move means a small ellipse, while moving the mouse quickly determines the ellipse to be drawn large.
+  So we use the stroke(speed) attribute to set the border of the ellipse, and the <code>ellipse(x,y,speed,speed)</code>
+to draw a ball at the specific x and y coordinates with the size “speed”.</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+void setup() {
+  size(640, 360);
+  background(102);
+}
+
+void draw() {
+  // Call the variableEllipse() method and send it the
+  // parameters for the current mouse position
+  // and the previous mouse position
+  variableEllipse(mouseX, mouseY, pmouseX, pmouseY);
+}
+
+void variableEllipse(int x, int y, int px, int py) {
+  float speed = abs(x-px) + abs(y-py);
+  // The stroke function tells the computer what the colour of the margin of the ellipses would be, accordingly yo the speed. A bigger speed would make
+  // the ellipses borders to be more faded. The colour varies between shades of grey and black.
+  stroke(speed);
+  ellipse(x, y, speed, speed);
+  // this line tells the computer to draw an ellipse, at the coordinates x, y, which are the coordinates of the mouse. The size of it is basedon the speed variable
+  //If the mouse if moving slowly, it draws a small eclipse
+  //If the mouse if moving quickly, it draws a large eclipse
+}
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>The CODE</h3>
+  <script src="https://gist.github.com/Merdenea/42099ff7549cec02290a41693b9ee8b0.js"></script>
+</div>
+<h2><a href="Random_Moving_Balls.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

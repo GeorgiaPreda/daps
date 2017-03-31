@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Processing is Fun</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+
+
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+   <h3>Welcome to Interstellar Run.</h3>
+    <p>We like to belive this application is a cool display of some interstellar traveling, done in processing.</p>
+    <p>Hover over the stars and move your mouse to the left if you wish to go slow, <br>
+    or to right to reach the speed of light.</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+    Star[] stars = new Star[1000];                       // We create an array named "stars",
+                                                     // which will be filled with 1000 elements made with the Star() class.
+
+float speed;                                         // We create a variable "speed", it'll be used to control the speed of stars.
+
+void setup() {
+  size(600, 600);
+  for (int i = 0; i < stars.length; i++) {
+    stars[i] = new Star();                           // We fill the array with a for loop bu creating 1000 new Stars
+  }
+}
+
+void draw() {
+
+  speed = map(mouseX, 0, width, 0, 50);               // We link the value of the speed variable to the mouse position.
+
+  background(0);
+  translate(width/2, height/2);                      // We shift the entire composition,
+                                                     // moving its center from the top left corner to the center of the canvas(in order to allow us to speed when we go to the right side,
+                                                     // and to be slower when we go to the left.
+  for (int i = 0; i < stars.length; i++) {
+    stars[i].update();                                // We draw each star, running the "update" method to update its position and
+    stars[i].show();                                  // The "show" method to show it on the canvas.
+  }
+}
+
+class Star {                                          // We create a "Star" Class.
+
+  float x;                                            // We create variables to specify the x and y of each star.
+  float y;
+  float z;                                            // We create "z", a variable we'll use in a formula to modify the stars position.
+
+  float pz;                                            // We create an other variable to store the previous value of the z variable.
+                                                       // (the value of the z variable at the previous frame).
+
+  Star() {
+
+    x = random(-width/2, width/2);                     // We placerandom values in the variables( for the size of the stars)
+                                                        // note: height and width are the same: the canvas is a square.
+    y = random(-height/2, height/2);
+                                                      // note: the z value can't exceed the width/2 (and height/2) value,
+                                                      // beacuse I'll use "z" as divisor of the "x" and "y",
+                                                      // whose values are also between "0" and "width/2".
+    z = random(width/2);
+                                                      // We set the previous position of "z" in the same position of "z",
+                                                      // which it's like to say that the stars are not moving during the first frame.
+    pz = z;
+  }
+
+  void update() {
+                      // In the formula to set the new stars coordinates
+                      // We'll divide a value for the "z" value and the outcome will be
+                      // the new x-coordinate and y-coordinate of the star.
+                      // Which means if I decrease the value of "z" (which is a divisor),
+                      // the outcome will be bigger.
+                      // Wich means the more the speed value is bigger, the more the "z" decrease,
+                      // and the more the x and y coordinates increase.
+                      // Note: the "z" value is the first value I updated for the new frame.
+    z = z - speed;
+                      // When the "z" value equals to 1, we're sure the star have passed the
+                      // borders of the canvas,
+                      // so we can place it on more time in the canvas, with new x, y and z values.
+                      // Note: in this way we also avoid a potential division by 0.
+    if (z < 1) {
+      z = width/2;
+      x = random(-width/2, width/2);
+      y = random(-height/2, height/2);
+      pz = z;
+    }
+  }
+
+  void show() {
+    fill(255);
+    noStroke();
+
+    // with theese "map", we get the new star positions
+    // the division x / z get a number between 0 and a very high number,
+    // we map this number (proportionally to a range of 0 - 1), inside a range of 0 - width/2.
+    // In this way we are sure the new coordinates "sx" and "sy" move faster at each frame
+    // and which they finish their travel outside of the canvas (they finish when "z" is less than a).
+
+    float sx = map(x / z, 0, 1, 0, width/2);
+    float sy = map(y / z, 0, 1, 0, height/2);;
+
+    // I use the z value to increase the star size between a range from 0 to 16.
+    float r = map(z, 0, width/2, 16, 0);
+    ellipse(sx, sy, r, r);
+
+    // Here i use the "pz" valute to get the previous position of the stars,
+    // so I can draw a line from the previous position to the new (current) one.
+    float px = map(x / pz, 0, 1, 0, width/2);
+    float py = map(y / pz, 0, 1, 0, height/2);
+
+    // Placing here this line of code, I'm sure the "pz" value are updated after the
+    // coordinates are already calculated; in this way the "pz" value is always equals
+    // to the "z" value of the previous frame.
+    pz = z;
+
+    stroke(255);
+    line(px, py, sx, sy);
+
+  }
+}
+
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <p>Let's take a look at the code!</p>
+  <p>In terms of global variables, we need an array and a <code>speed</code> variable. The array is type <code>Star</code><br>
+  meaning it will be populated with <code>Star</code>objects, something that we will get back to in a moment.<br> 
+  The <code>setup()</code> for this application is pretty basic. We set the canvas size to 600 by 600 pixels, and initialize <br>
+  our array with 1000 <code>Star</code> objects.<br>
+  Now, let's get back to the <code>Star</code> type. It is defined in our <code> Star class</code>. Each object of this type is one of our stars.<br>
+  It has coordinates, speed and coordinates for the next position. Each star is initally created at a ranodm position in the <code>Star()</code> constructor.<br>
+  The method <code>update()</code> sets new coordinates to a star(the formula is explained below). The <code>show()</code> method draws each star and the "line"<br>
+  of light that unites its previous and current location.<br>
+  Outside the class, in the <code>Draw</code> method we map the speed to the mouse current location, and on all the star objects we called the two methods:<br>
+  <code>update()</code> and <code>show()</code>.
+
+  </p>
+  <script src="https://gist.github.com/Merdenea/a124268326100b03c2d1dacabacf77f2.js"></script>
+</div>
+<h2><a href="Paddles.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

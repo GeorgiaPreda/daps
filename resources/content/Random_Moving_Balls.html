@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Random Moving Balls</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+  <h3>Random Moving Balls</h3>
+  <p>This examples ilustrates how the processing language can be used for expresing ideas that are rather more artistic.</p>
+  <p>The aplication works in the following way: each time you click on the canvas a new ball will spwan and it move in random directions. The path of each ball is recorded and drawn, creating a aesthetically interesting visual pattern.</p>
+  <p>Enjoy!</p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+  class Particle {
+    float x;
+    float y;
+    ArrayList<PVector> history;                      //We are going to use a vector that remembers everything that was written on the screen in order to keep displaying what we drawed.
+
+    Particle(float x, float y) {                    //Here we say that each point that we draw has two coordinates : x and y. We will use them to draw lines between the particles
+      this.x = x;
+      this.y = y;
+      this.history = new ArrayList<PVector>();      //We add these two coordinates in out vector
+    }
+
+    void update() {
+      this.x += random(-10, 10);
+      this.y += random(-10, 10);
+      for (PVector v : this.history) {
+        v.x += random(-2, 2);                       //We create a new particle with the x coordinate randomly choosed in the neighborhood of our last particle
+        v.y += random(-2, 2);                       //We create a new particle with the y coordinate randomly choosed in the neighborhood of our last particle
+      }
+
+      PVector v = new PVector(this.x, this.y);       //We create a new particle
+      this.history.add(v);                           //We add id
+      if (this.history.size() > 100) {
+        this.history.remove(0);                      //Each structure has a maximum of particles (this is why they look similar). If we exeed this maximum, we finished our current structure
+      }
+    }
+
+    void show() {
+      stroke(0);
+      fill(0, 150);
+      ellipse(this.x, this.y, 24, 24);              //We create an elipse at the position of our mouse
+
+      noFill();
+      beginShape();
+      for (PVector pos : history) {
+        //fill(random(255));
+        //ellipse(pos.x, pos.y, i, i);
+        vertex(pos.x, pos.y);                        //We start drawing vertexes (lines) between our particles on order to link them
+      }
+      endShape();
+    }
+  }
+
+  ArrayList<Particle> particles = new ArrayList<Particle>();
+
+  void setup() {
+    size(600, 600);
+  }
+
+  void mousePressed() {
+    particles.add(new Particle(mouseX, mouseY));            //We add a new particle when we click the mouse, and this is when we start drawing the structure
+  }
+
+  void draw() {
+    background(200);
+    for (Particle p : particles) {                          //We add more particles and we draw them
+      p.update();
+      p.show();
+    }
+
+  }
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>Now, let's take a look at the code!</h3>
+  <p>The <code>setup()</code> is very simple this time, we only need to set our canvas size to 600 by 600 pixels.<br>
+  For this application we designed a <code>Particle class</code> to define each particle or ball we want to draw.<br>
+   So, an object(a ball) of type <code>Particle</code> will have x and y coordinates, an array to store <br>
+   each movement of the ball from the moment of its creation and a method called <code>Update()</code> that does exactly<br> 
+   what the name suggests, chooseing at random where a ball should move next, and adding that ifnormation into our array.<br>
+   Outside the class, we need a to implement a method that draws the balls we have already created and their specific<br>
+   prior movemnets. The <code>show()</code> method does this essentially endlessly, being called in the the <code> draw</code><br>
+   function, that, as you already know, is executed in an endless loop. The <code> mousePressed()</code> method creates <br>
+   a new particle object every time the mouse is presed, int the same location as the cursor.<br>
+   In the <code> draw()</code> method we call the <code>Update()</code> and <code>show()</code> on each particle object <br>
+   we have created and that is it!<br>
+
+   </p>
+  <script src="https://gist.github.com/Merdenea/f5384d68fbab1ca8b665e920dbef4d92.js"></script>
+</div>
+<h2><a href="Lives.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>

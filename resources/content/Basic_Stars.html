@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Basic Stars</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+   <h3>Welcome to BASIC STARS application.</h3>
+  <p>Hi. This will be the first application that you will run in Processing.
+    Well, it's not exactly an application because it doesn't really do anything,
+    but, we will present you this one to get you accomodated with the basic
+    main functions that define your application in processing (setup and draw).</p>
+  <p><h3>void setup() { ... }</h3><br> This is where you put all the "details"
+    of your application that will remain unchanged. For example: the background color,
+    or the size of the window that your application will run on. More details on this:
+    <a href = "https://processing.org/reference/setup_.html">here.</a> <br>
+    If you pressed the link above, you will realise you have been redirected
+    to the Processing web-site from which you have previously downloaded your application.
+    And this is the best place from which you can gather <b>a lot</b> of useful
+    information about everything that Processing you can do.
+    So, please keep in mind that it's a very good idea to come back here from
+    time to time and discover some new awsome features you can add to your code.</p>
+    <p><h3>void draw()</h3><br>Here is the place where the magic happens.
+      These represents the code of your application. It basically
+      repeats the code inside this function until the program is finished.
+      You can read more details on these here <a href = "https://processing.org/reference/draw_.html">here.</a></p>
+    <p>With all these being said, it's time to fill these functions with some code, right?
+      So, we will firstly decide which will be the seize of our window, and in our case, it will be
+      640 by 360, and you set this by the following line of code being inserted in the <code>void setup()</code>
+      function: <code>size(640, 360);</code></p>
+    <p>Next, we will try to draw two simple stars. For this, we will need to make
+      our own function to draw a star, obtiously called <b>star</b>. So, under the <code>draw()</code> function,
+      define our function: <code>void star(float x, float y)</code>. Inside the
+      body (the lines between the two curly braces { } ), first type the <code>beginShape();</code> and
+      <code>endShape(CLOSE);</code> lines of code, one after another. These functions
+      allow us to draw complex shapes that are defined between these two lines.
+      </p>
+    <p>Now that we used the previous two functions, we can define how our star shape
+      should look like. For this, we will use the <code>vertex()</code> function.
+      All shapes are made out of linked vertices, from a point to another.
+      So, as you can already imagine, we are going to define a series of
+      <code>vertex()</code> functions that represent the points that are going
+      to be linked through vertices, so we can finally a concrete shape.
+      As you can also see from the code that sits under our representation of
+      this basic application. there three more functions: <code>fill(102);</code>,<code>stroke(255);</code>
+      and <code>strokeWeight(2);</code>. The numbers between the braces represent the code colors
+      used in Processing. You can google for these codes, or, Processing also has a color selector to aid in choosing colors.
+      Access this via Tools (from the menu bar) → Color Selector.
+    </p>
+    <p><code>fill()</code> sets the color that our shape will have.</p>
+    <p><code>stroke()</code> sets the color of the stroke around our shape.</p>
+    <p><code>strokWeight()</code> sets the "dimension" of our stroke in pixels.</p>
+    <p>All these being said, we consider that you can take the code below,
+      paste it into your blank processing page, run it (you should see the same
+      window as below) and then start playing with the function, or even with the shape.</p>
+
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+    void setup() {
+      size(640, 360);
+    }
+
+      void draw() {
+        background(51);
+        star(100, 100);
+      star(200, 300);
+    }
+
+    void star(float x, float y) {
+      beginShape();
+      fill(102);
+      stroke(255);
+      strokeWeight(2);
+      vertex(x, y-50);
+      vertex(x+14, y-20);
+      vertex(x+47, y-15);
+      vertex(x+23, y+7);
+      vertex(x+29, y+40);
+      vertex(x, y+25);
+      vertex(x-29, y+40);
+      vertex(x-23, y+7);
+      vertex(x-47, y-15);
+      vertex(x-14, y-20);
+      endShape(CLOSE);
+    }
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>The CODE</h3>
+  <script src="https://gist.github.com/Merdenea/6f1ebdea04356f5ed6cedd47d8fdbc73.js"></script>
+</div>
+<h2><a href="Balls.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>Paddle Wars</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+    <h3>Paddle Wars</h3>
+    <p>Our next example is a game we are sure you remember, being inspired by what many consider to be the first video game ever,<br>
+   Pong. We decided to call it Paddle Wars. The gameplay should be familiar to you, so just click on the canvas and start controling <br>
+   your paddle using the UP and DOWN keys. <br>
+   Enjoy!
+   </p>
+
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+  int l = 640; // canvas dimension
+int x=200, y=200; //coordinates of the ball
+float xV=4, yV=4; // velocity of the ball 
+int p1y = 200, p2y = 200, ph = 120; // paddle coordinates and height 
+int dy,dx; // variables used to store the difference in orientation after the ball is reflected
+int score1,score2; // scores 
+int aIs = 5; // the speed of the enemy paddle
+
+/* Setting up the canvas size and colour; the text size. This code runs only once*/
+void setup()
+{
+  size (640,640);
+  fill (125,0,0);
+  textSize(18); 
+}
+
+/*This function is used to reset the position of the ball to the centre of the canvas after one player loses */
+void reset()
+{
+  x = l/2;
+  y = l/2;
+  xV= - xV;
+  yV = 2;
+}
+
+/*This function computes the position of the ball after hitting a wall or a paddle
+  The change in direction is obtained by using negative velocity of hittin a bouncing point*/
+void update()
+{
+  
+   x += xV;
+   y += yV;
+   if (y < 0 && yV < 0)//If the ball hitted the top wall
+     yV = -yV;
+   if (y > l && yV > 0) //If the ball hitted the bottom wall
+     yV = -yV;
+   if (x < 0) //If the ball reaches the left side
+   {
+     if (y > p1y && y < p1y + ph)//If it hitted the paddle
+      { 
+        xV = -xV;
+        dy = y - (p1y + ph/2);
+        yV = dy * 0.3;
+      }
+      else 
+      {
+        score2++;
+        reset();
+      }
+   }
+   if (x > l) //If the ball reaches the right side
+   {
+     if (y > p2y && y < p2y + ph) //If it hitted the paddle
+      { 
+        xV = -xV;
+        dy = y - (p2y + ph/2);
+        yV = dy * 0.3;
+      }
+      else 
+      {
+        score1++;
+        reset();
+      }
+   }
+   
+   // This is the automated control the opponent's paddle
+   if (p2y + ph/2 < y)
+   {
+     p2y += aIs;
+     if (p2y > l - ph) // Make sure the paddle stays on the screen
+     p2y = l - ph;
+   }
+   else 
+   {
+     p2y -= aIs;
+     if (p2y < 0) // Make sure the paddle stays on the screen
+     p2y = 0;
+   }
+ 
+   
+     
+   
+}
+/*The main code which is run endlessly */
+void draw()
+{
+  background (0); // Resets the backgroung 
+  update(); // Calls the update function
+  rect(0, p1y , 14, ph); // Draws one of the paddle
+  rect(l-14, p2y, 14, ph); // Draws one of the paddle
+  ellipse(x,y,20,20); // Darws the ball
+  text ( "You: "+score1, 110, 50); // Shows the player's score
+  text ( "Friendly AI: "+score2, 430, 50); // Shows the AI score
+  
+}
+/*The UP and DOWN keys control the player's paddle */
+void keyPressed()
+{
+  if (keyCode == UP)
+    {
+      if (p1y > 0)
+      p1y -= ph/2;
+    }
+  if (keyCode == DOWN)
+    {
+      if (p1y < l)
+      p1y += ph/2;
+    }
+    /* Make sure the paddle stays on the screen */
+    if(p1y < 0)
+      p1y = 0;
+    if (p1y > l - ph)
+      p1y = l - ph;
+}
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>Here is the code.</h3>
+  <p>It is very simple and intuitive game to program. First we need some variables, as detailed below. We need to store<br>
+  the x and y coordinates of the ball, the x-axis and y-axis velocity of the balll, the paddles' positions, the scores,<br>
+  the AI paddle speed and the canvas dimenssion. Once these are out of the way, we need to do the <code>setup()</code>,<br>
+  initialising the canvas to 640 by 640 pixele, setinf the color for the ball and paddles to red using <code>fill()</code><br>
+  and setting the text size we will use for displaying the scores.<br>
+  The first method we come across is <code>reset()</code>. It is later called when a player scores a point, resetting the ball<br>
+  to the center of the canvas.<br>
+  The <code>update()</code> method takes into account the position of the ball at each time, and when it hits one of the walls<br>
+  or paddles, the balls is reflected back. When it hits on of the walls, this effect is achived by using the opposite of the y-axis <br>
+  velocity(new yVelocity = -old yVelocity) . When the ball hits one of the paddles, the same procedure is applied to the x-axis velocity<br>
+  but this time, to change the direction of the ball a bit, the y-axis velocity is affected by the position where the ball hits the paddle<br>.
+  If a player can't reach the boall, the opponent scores a point, thus incrisint his score, and the <code>reset()</code> method is called.<br>
+  The <code>keyPressed()</code> method deals with the user input, detecting when of the UP and DOWN arrows are pressed, and moves <br>
+  the player's paddle accordingly.<br>
+  The <code>draw()</code> method is executed in an endless loop. It resets the background, calls the <code>update()</code> method and draws the the paddles, the ball and the text showing<br>
+  the score to their new state. <br>
+  You should try modify the code yourself, changing the speeds or the way the ball bounce off the paddles.</p>
+
+<script src="https://gist.github.com/Merdenea/0cd17c597ba6367bbd856e35030ff920.js"></script>
+</div>
+<h2><a href="Snake.html"><font color="red">Next example</font></a></h2>
+</div>
+</div>
+<!-- - -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>

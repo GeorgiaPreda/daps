@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="">
+<meta name="author" content="">
+
+<link rel="icon" href="../../favicon.ico">
+
+<title>2048</title>
+
+<!-- Bootstrap core CSS -->
+<link href="../css/bootstrap.min.css" rel="stylesheet">
+<link href="../css/ie10-viewport-bug-workaround.css" rel="stylesheet">
+<link href="../css/starter-template.css" rel="stylesheet">
+
+<script src="../js/ie-emulation-modes-warning.js"></script>
+<script type="text/javascript" src="../js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="../js/alphabet.js"></script>
+<script type="text/javascript" src="../js/processing.js"></script>
+<script src="../js/processing-1.3.6.min.js"></script>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    <a class="navbar-brand" href="../../home.html">Home</a>
+    </div>
+    <div id="navbar" class="collapse navbar-collapse">
+      <ul class="nav navbar-nav">
+        <li ><a href="start.html">Get Started</a></li>
+          <li class="dropdown">
+            <a herf=# class="dropdown-toggle" data-toggle="dropdown" role=button >Examples <span class="caret"></span></a>
+              <ul class="dropdown-menu">
+              <li><a href="Basic_Stars.html">Basic Stars</a></li>
+              <li><a href="Balls.html">Balls</a></li>
+              <li><a href="Random_Moving_Balls.html">Random Moving Balls</a></li>
+              <li><a href="Lives.html">Lives Game</a></li>
+              <li><a href="Interstellar_Run.html">Interstellar Run</a></li>
+              <li><a href="Paddles.html">Paddle Wars</a></li>
+              <li><a href="Snake.html"> Snake </a></li>
+              <li><a href="2048.html">2048</a></li>
+              </ul>
+          </li>
+        <li><a href="About.html">About</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</head>
+
+<div class="container">
+<div class="starter-template">
+<style>
+.bg-1 {
+    background-color: #1abc9c; /* Green */
+    color: #ffffff;}
+.bg-2 {
+    background-color: #474e5d; /* Dark Blue */
+    color: #ffffff;}
+.bg-3 {
+    background-color: #000000; /* White */
+    color: #555555;}
+</style>
+
+<body>
+
+<style>
+.container-fluid {
+padding-top: 70px;
+padding-bottom: 70px;}
+</style>
+
+<div class="container-fluid bg-1 text-center">
+    <h3>2048. The Game</h3>
+    <p>
+      Okay guys, if you made it this far, then congrats, it means you’ve made some real progress! <br>
+      <p>We thought that learning you how to code 2048 would be fun because of the popularity this
+      games has gained in such a short time. Our version of the games has somewhere near 150 lines
+      of codes, which proves once again that programming can be easy and fun.<br>
+<p>Now, lets get to work.</p> <br>
+<p>You’ve learned from the previous tutorials that the main functions are <code>draw()</code> and <code>setup()</code>.
+We are going to use some more because it’s going to be way easier to divide the code in smaller
+parts than putting it all just in those 2 functions.</p><br>
+<p>First, we need the <code>setup()</code> function. In this function all that we do is to create the size of the
+board and to set the style of the text using <code>noStroke()</code> and <code>textFont()</code>. Then we call the <code>restart()</code> function. <br>
+<h3>The <code>restart()</code> method</h3>
+This method states that our board/grid is going to contain 4 rows and 4 columns. We initialize our
+score, the width, the height and if the “dead” variable is 0, then the game is not over yet. We call the spawn function.</p>
+<br>
+<p><h3>The <code>spawn()</code> function</h3>
+This is the method that spawns the new blocks. We are using 2 <b>Arraylists</b>( an ArrayList is a vector,
+which means a sequence of values that can be accessed) to save the spaces we are using and we are
+remembering them. The r variable is spawning the new blocks in some empty spaces chose randomly.
+Next, we have the draw() method. This method deals with the smooth movement of the blocks, together
+with drawing them. We are using it to determine where to create the blocks, how to create them(text, color)
+and this is the method in which we are also checking if the game is over. For creating  the rectangles(blocks),
+we are calling the <code>rectt()</code> method, and in order to add text to them we are calling the <code>text()</code> function.</p>
+<br>
+<p><h3>The <code>rectt()</code> method</h3>
+All that we do in this function is to create a new rectangle at a known position of coordinated x and y,
+with a known width, height and radius. Then we fill it with the color for the number that the rectangle contains.
+The <code>text()</code> method
+We are using this method to add text to the rectangle. We set the color, the position, the size and the text.
+<h3>The <code>keyPressed()</code> method</h3>
+We use this function to do something each time the player presses a key. Accordingly to the key, we check
+if the movement can be done by calling the <code>go()</code> method. If it can, then we do it and we spawn a new block
+by calling again the <code>spawn()</code> method. We also call the <code>gameover()</code> function to see if we have to start the game again.</p>
+<br>
+<p><h3>The <code>gameover()</code> function</h3>
+We call the <code>go()</code> method in all the possible direction. If all of the spaces are full and the blocks cannot
+be merged, then the game is over.</p>
+<br>
+<p><h3>The <code>go()</code> method</h3>
+Well, this method is quite complicated. In this method we are determining in which  direction the player
+is moving the tiles. We are using a Boolean variable to remember if any tiles are moves. We check to see
+in which way the player tries to move the blocks, then we check to see if we can find any empty position
+along moving the elements. If this can be done, we start sliding into empty positions or positions that
+have the same number as the blocks we are moving. We remember everything we move.
+If 2 blocks have the same value and they are sliding one into another, we are able to merge them, update
+the score are remember we have moves something by updating the “mv” variable.</p>
+<br>
+<p><h3>The <code>mousePressed()</code> method</h3>
+Everything we do in this function is to determine the keys we use if the user plays the game using the
+mouse and not the keyboard. We are doing so using the position of the mouse.</p>
+<br>
+<p>If you have read everything you should be able by now to partially understand how we created 2048.
+Everything you need know is some practice. Start coding ASAP!</p> <br>
+<p>You have reached the end. Hooray!</p>
+
+    </p>
+</div>
+
+<div class="container-fluid bg-3 text-center">
+  <script type="application/processing" data-processing-target="pjs">
+int[][] b = new int[4][4], pp[] = new int[4][4][3]; //size(len,len) is better but js no support
+int f=4, pd=20, bs=100, len=pd*(f+1)+bs*f, sc=0, aS, aL=10, dead=1, w, h, bb=color(0), C=CENTER;
+
+void setup() {
+  size(500, 500);
+  restart();
+  textFont(createFont("Courier", 40));
+  noStroke();
+}
+
+void restart() {
+  b = new int[4][4];              //create the grid
+  spawn();                       //start spawning the blocks
+  dead = sc = 0;                 //the score is 0 points at the beginning
+  w=width;
+  h=height;
+}
+
+void spawn() {                                                                                                     //we need to spawn the rectangles in empy space
+  ArrayList<Integer> xs = new ArrayList<Integer>(), ys = new ArrayList<Integer>();                                //we are using 2 ArrayLists to save the spaces we are using
+  for (int j=0; j<f; j++) for (int i=0; i<f; i++) for (int k=0; k<1&&b[j][i]==0; k++, xs.add(i), ys.add(j)) {      //we add the spaces we are using to remember them
+  }
+  int r=(int)random(xs.size()), y=ys.get(r), x=xs.get(r), z=b[y][x]=random(-(pp[y][x][0]=-1))<.9?2:4;            //the r variable is spawning the new blocks in empy spaces
+}
+
+void draw() {
+  background(255);                                                                                         //set the white background
+  rectt(0, 0, w, h, 10, color(150));
+  fill(200);
+  float grs=0, txv=35;
+  for (int j=0; j<f; j++) for (int i=0; i<f; i++) rect(pd+(pd+bs)*i, pd+(pd+bs)*j, bs, bs, 5);          //we are using j for rows and i for columns we have 4 rows and 4 columns; we are figuring out the coordinates for creaing the block, with the "bs" width and height, and colour 5
+  for (int j = 0; j < f; j++) for (int i = 0; i < b[j].length; i++) {
+    float fC=frameCount, xt=pd+(pd+bs)*i, yt=pd+(pd+bs)*j, x=xt, y=yt, val=b[j][i], tm=(fC-aS)*1.0/aL;    //the fC and tm variables is helping to simulate a smooth movement
+    if (fC - aS < aL && pp[j][i][0]>0) {
+      int py=pd+(pd+bs)*pp[j][i][1], px=pd+(pd+bs)*pp[j][i][2];
+      x=(x-px)*tm+px;
+      y=(y-py)*tm+py;
+      if (pp[j][i][0]>1) {
+        val=pp[j][i][0];
+        textt(""+pp[j][i][0], xt, yt+txv, bs, bs, bb, 40, C);                                                  //add the text;
+        rectt(xt, yt, bs, bs, 5, color(255-(log(val)/log(2))*255/11, (log(val)/log(2))*255/11, 0));            //the colour depends on the power of 2
+      }
+    }
+    if (fC-aS>aL||pp[j][i][0]>=0) {
+      if (pp[j][i][0]>=2) {
+        float gr=abs(0.5-tm)*2;
+        if (fC-aS>aL*3) gr=1;
+        else grs=gr;
+        rectt(x-2*gr, y-2*gr, bs+4*gr, bs+4*gr, 5, color(255, 255, 0, 100));
+      } else if (pp[j][i][0]==1) rectt(x-2, y-2, bs+4, bs+4, 5, color(255, 100));
+      if (val>0) {
+        rectt(x, y, bs, bs, 5, color(255-log(val)/log(2)*255/11, log(val)/log(2)*255/11, 0));                    //draw a new rectangle
+        textt(""+int(val), x, y + txv, bs, bs, bb, 40, C);                                                  //add text
+      }
+    }
+  }
+  if (grs>0) textt(""+sc, 0, h/2, w, 200, color(255, 255, 0, 200), grs*40, C);
+  textt("score: "+sc, 10, 5, 100, 50, bb, 10.0, LEFT);
+
+  if (dead>0) {                                                                 //Check if the game is over
+    rectt(0, 0, w, h, 0, color(255, 100));                                       //Create a rentagle that covers the background
+    textt("Gameover! Click to restart", 0, h/2, w, 50, bb, 30, C);               //print the text
+    if (mousePressed) restart();                                                // If the player click the mouse, restart the game
+  }
+}
+
+void rectt(float x, float y, float w, float h, float r, color c) {                 //create a new block at coordinates x and y, with a width w and a height h, with a radius(for the edge), and a colour
+  fill(c);                                                                         //fill it with the coulour for that number
+  rect(x, y, w, h, r);
+}
+
+void textt(String t, float x, float y, float w, float h, color c, float s, int align) {      //now we have the rectangle, but we need the number that is displayed in it
+  fill(c);                                                                                //add colour
+  textAlign(align);                                                                         //align the text to center
+  textSize(s);                                                                               //set the size of the text
+  text(t, x, y, w, h);                                                                      //add the text
+}
+
+void keyPressed() {
+
+  if (dead>0)return;                                                  //if the user died, quit this function
+  int k=keyCode, dy=k==UP?-1:(k==40?1:0), dx=k==37?-1:(k==39?1:0);    //dy is for up and down, dx for right and left
+  int[][] newb=go(dy, dx, true);                                      //the new board
+  if (newb != null) {                                             // if the move was succesfull
+    b=newb;                                                           //we copy the new board over the old one
+    spawn();                                                        //add a new block
+  }
+
+  if (gameover()) dead=1;                                        //if the gameover is true, we are dead
+}
+
+boolean gameover() {
+  int[] dx = {1, -1, 0, 0}, dy={0, 0, 1, -1}, ppbk[][] =pp;                    // check the 4 directions
+  boolean out=true;
+  for (int i=0; i<f; i++) if (go(dy[i], dx[i], false) != null) out=false;        //loop over those 4 positions and see if the game is over or not ( if we cannot find any empty spaces)
+  ;
+  ;
+  pp=ppbk;
+  return out;
+}
+
+int[][] go(int dy, int dx, boolean ups) {                                   //the function in which we determine in which direction the player is moving the tiles; ups its the updates score
+  pp = new int[4][4][3];
+  boolean mv = false;                                                     //mv stands for moved. we remember if we moved the tiles
+  int[][] bk = new int[4][4];
+  for (int j=0; j<f; j++) for (int i=0; i<f; i++) bk[j][i]=b[j][i];
+  if (dx != 0 || dy != 0) {
+    int d=dx!=0?dx:dy;                                                    //the direction in which we are moving
+    for (int perp = 0; perp < f; perp++) for (int tn=(d>0?f-2:1); tn!=(d>0?-1:f); tn-=d) {        //the gravity function (every row/column has to move its elements)
+      int y = dx!=0?perp:tn, x=dx!=0?tn:perp, ty=y, tx=x;
+      if (bk[y][x]==0) continue;                                          //see if we can find any empty position along moving the elements
+      for (int i=(dx!=0?x:y)+d; i!=(d>0?f:-1); i+=d) {                    //start sliding by looking in the opposite direction
+        int r=dx!=0?y:i, c=dx!=0?i:x;                                     //the row and the column
+        if (bk[r][c]!=0 &&bk[r][c]!=bk[y][x]) break;                      //we slide into empti positions or positions that have the same number as the blocks we are moving
+        if (dx!=0) tx=i;
+        else ty=i;                                                 // we store where we move along to
+      }
+      if ( (dx != 0 && tx == x) || (dy != 0 && ty == y)) continue;      //tx and ty are the positions in where the block is sliding into, and x and y are the current positions of our block
+      else if (bk[ty][tx]==bk[y][x]) {                                   //if our block has the same value as the block in which we are moving, we merge the blocks by doubling the value
+        mv=true;                                                          //we moved our block
+        pp[ty][tx][0]=bk[ty][tx];
+        if (ups)sc+=(bk[ty][tx]*=2);                                        //update the score
+      } else if ((dx!=0&&tx!=x)||(dy!=0&&ty!=y)) {                       //if we are moving and the position is empty
+        pp[ty][tx][0]=1;
+        bk[ty][tx]=bk[y][x];                                               //slide the block into the empty position
+        mv=true;                                                          //move is true, we moved the block
+      }
+      if (mv) {                                                   //if we were able to move anything, we clear the original block
+        pp[ty][tx][1] = y;
+        pp[ty][tx][2] = x;
+        bk[y][x] = 0;
+      }
+    }
+  }
+  if (!mv) return null;
+  aS = frameCount;
+  return bk;
+}
+void mousePressed() {                                  //we store the direction in which we are moving
+  keyCode = 0;
+  if (mouseX < width / 4) keyCode = LEFT;
+  if (mouseX > width * 3 / 4) keyCode = RIGHT;
+  if (mouseY < height / 4) keyCode = UP;
+  if (mouseY > height * 3 / 4) keyCode = DOWN;
+  if (keyCode > 0) keyPressed();
+}
+
+  </script>
+<canvas id="pjs"> </canvas>
+</div>
+
+
+<div class="container-fluid bg-2 text-center">
+  <h3>The Code</h3>
+<script src="https://gist.github.com/Merdenea/20cb8acedc6947c72553051cc804f7c2.js"></script>
+</div>
+<h2><a href="About.html"><font color="red">Congratulations!</font></a></h2>
+</div>
+</div>
+<!-- - -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src=".. /js/ie10-viewport-bug-workaround.js"></script>
+  <hr>
+  <!-- Footer -->
+  <footer>
+    <div class="row">
+      <div class="col-lg-12">
+         <div align="center">Copyright &copy; Coding Curriculum 2016 -2017 UCL </div>
+      </div>
+    </div>
+  </footer>
+</body>
+
+</html>
